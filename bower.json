@@ -12,7 +12,15 @@
     ],
     "keywords": [
         "dependency",
-        "injection"
+        "injection",
+        "javascript",
+        "angular",
+        "service",
+        "factory",
+        "provider",
+        "controller",
+        "module",
+        "component"
     ],
     "authors": [
         "Jeff Brannon <darth.jeff1@gmail.com>":
