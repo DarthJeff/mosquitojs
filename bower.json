@@ -1,0 +1,28 @@
+{
+    "name": "mosquito",
+    "version": "0.0.1",
+    "description": "JavaScript Dependency Injection",
+    "main": {
+        "app/js/mosquito.js"
+    },
+    "dependencies": {},
+
+    "moduleType": [
+        "globals"
+    ],
+    "keywords": [
+        "dependency",
+        "injection"
+    ],
+    "authors": [
+        "Jeff Brannon <darth.jeff1@gmail.com>":
+    ],
+    "license": "MIT",
+    "ignore": [
+        "**/.*",
+        "node_modules",
+        "bower_components",
+        "test",
+        "tests"
+    ]
+}
