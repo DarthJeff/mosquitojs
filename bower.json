@@ -1,28 +1,25 @@
 {
   "name": "mosquito",
-  "authors": [
-  "Jeff Brannon <darth.jeff1@gmail.com>"
+  "main": [
+    "dist/mosquito.min.js"
   ],
-  "description": "A light JavaScript dependency injection framework.",
-  "main": "dist/mosquito.min.js",
-  "dependencies": {},
   "keywords": [
     "dependency",
     "injection",
+    "javascript",
     "angular",
     "framework",
+    "controller",
     "service",
     "factory",
-    "provider",
-    "controller",
-    "component"
+    "provider"
   ],
-  "license": "MIT",
   "ignore": [
-    "**/.*",
     "node_modules",
     "bower_components",
-    "test",
-    "tests"
-  ]
+    "test*"
+  ],
+  "dependencies": {},
+  "version": "0.0.1",
+  "license": "MIT"
 }
