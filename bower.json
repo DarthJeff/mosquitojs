@@ -1,7 +1,7 @@
 {
   "name": "mosquito",
   "authors": [
-    "Jeff Brannon <darth.jeff1@gmail.com>"
+  "Jeff Brannon <darth.jeff1@gmail.com>"
   ],
   "description": "A light JavaScript dependency injection framework.",
   "main": "dist/mosquito.min.js",
