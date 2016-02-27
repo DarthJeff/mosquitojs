@@ -19,8 +19,7 @@
         "factory",
         "provider",
         "controller",
-        "module",
-        "component"
+        "module"
     ],
     "authors": [
         "Jeff Brannon <darth.jeff1@gmail.com>":
