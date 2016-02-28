@@ -9,6 +9,7 @@ To use mosquitojs, just drop a single JavaScript file into your page:
 ```html
 <script src="mosquito.min.js"></script>
 ```
+### Bower
 
 ## Module
 
