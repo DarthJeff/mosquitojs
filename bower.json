@@ -1,1 +1,7 @@
-{"name": "mosquito","main": ["dist/mosquito.min.js"],"keywords": ["dependency", "injection", "javascript", "angular", "framework", "controller", "service", "factory", "provider"],"ignore": ["node_modules", "bower_components", "test*"],"dependencies": {},"version": "0.0.1","license": "MIT"}
+{
+  "name": "mosquito",
+  "main": "dist/mosquito.min.js",
+  "keywords": ["dependency", "injection", "javascript", "angular", "framework", "controller", "service", "factory", "provider"],
+  "ignore": ["node_modules", "bower_components", "test*"],
+  "license": "MIT"
+}
