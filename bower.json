@@ -2,20 +2,8 @@
   "name": "mosquitojs",
   "description": "Light JavaScript dependency injection",
   "main": "app/js/mosquito.js",
-  "keywords": [
-    "dependency",
-    "injection",
-    "javascript",
-    "angular",
-    "framework",
-    "controller",
-    "service",
-    "factory",
-    "provider"
-    ],
   "ignore": [
     "node_modules",
     "bower_components"
-    ],
-  "license": "MIT"
+    ]
 }
