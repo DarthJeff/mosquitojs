@@ -1,28 +1,21 @@
 {
-
   "name": "mosquitojs",
   "description": "A light JavaScript dependency injection library",
-  "main": "dist/mosquito.min.js"
-,
-
+  "main": "dist/mosquito.min.js",
   "keywords": [
     "dependency",
     "injection",
-    "javascript"
-,
+    "javascript",
     "controller",
     "module",
-    "service"
-,
+    "service",
     "factory",
-    "provider"
+    "provider",
+    "angular"
   ],
-
   "license": "MIT",
-
   "ignore": [
     "node_modules",
     "bower_components"
   ]
-
 }
