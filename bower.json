@@ -1,21 +1,28 @@
 {
+
   "name": "mosquitojs",
-  "description": "Light JavaScript dependency injection",
-  "main": [
-    "app/js/mosquito.js"
-  ],
-  "moduleType": [
-    "globals"
-  ],
+  "description": "A light JavaScript dependency injection library",
+  "main": "dist/mosquito.min.js"
+,
+
   "keywords": [
     "dependency",
     "injection",
     "javascript"
+,
+    "controller",
+    "module",
+    "service"
+,
+    "factory",
+    "provider"
   ],
+
   "license": "MIT",
+
   "ignore": [
     "node_modules",
     "bower_components"
-  ],
-  "private": false
+  ]
+
 }
