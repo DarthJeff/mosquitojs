@@ -1,9 +1,3 @@
 {
-  "name": "mosquitojs",
-  "description": "Light JavaScript dependency injection",
-  "main": "app/js/mosquito.js",
-  "ignore": [
-    "node_modules",
-    "bower_components"
-    ]
+  "name": "mosquitojs"
 }
