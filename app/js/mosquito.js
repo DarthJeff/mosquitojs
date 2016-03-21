@@ -9,7 +9,8 @@ window['mosquito'] = new (function() {
     };
 
     function module(dependentModules){
-        var moduleDependents = dependentModules.concat([this]);
+        dependentModules.push(this);
+        var moduleDependents = dependentModules;
         var moduleControllers = [];
         var moduleServices = [];
 
@@ -112,7 +113,7 @@ window['mosquito'] = new (function() {
         var modules = [];
         for(var index = 0; index < moduleNames.length; index++){
             var moduleName = moduleNames[index];
-            modules[moduleName] = getModule(moduleName);
+            modules.push(getModule(moduleName));
         }
         return modules;
     }
