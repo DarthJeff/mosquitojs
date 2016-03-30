@@ -8,6 +8,13 @@ Mosquito Testing
     <script type="text/javascript">
         "use strict";
 
+        mosquito.run(function(){
+            module.controller('gameController');
+        });
+        mosquito.run(function(){
+            console.log(111);
+        });
+
         var module = mosquito.module('module1', []);
         module.observableInterface('oiGameLoop', ['update', 'render']);
         module.observableInterface('oiKeypad', ['keydown']);
@@ -40,8 +47,6 @@ Mosquito Testing
             this.keydown = function(params) { console.log('keydown controller call', params); }
 
         }]).fromObservableInterface(['oiGameLoop', 'oiKeypad']);
-
-        module.controller('gameController');
 
     </script>
 </body>

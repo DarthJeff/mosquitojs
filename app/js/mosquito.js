@@ -1,6 +1,7 @@
 'use strict';
 
 window['mosquito'] = new (function() {
+    var runMethods = [];
     var modules = [];
     var serviceType = {
         'service': 1,
@@ -167,6 +168,20 @@ window['mosquito'] = new (function() {
             }
         } else {
             return getModule(moduleName);
+        }
+    };
+
+    this.run = function(runMethod) {
+        if(runMethod === undefined) { throw "Run method undefined"}
+        runMethods.push(runMethod);
+        if(runMethods.length === 1){
+            document.onreadystatechange = function() {
+                if(document.readyState === 'complete') {
+                    for(var i = 0; i < runMethods.length; i++) {
+                        runMethods[i]();
+                    }
+                }
+            }
         }
     };
 
