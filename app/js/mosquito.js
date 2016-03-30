@@ -40,17 +40,12 @@ window['mosquito'] = new (function() {
             return injectionServices;
         }
 
-        function constructServiceMethod(serviceConstructor, serviceNames) {
-            var injectionServices = constructInjectionServices(serviceNames);
-            return serviceConstructor.apply(this, injectionServices);
-        }
-
         function constructServiceMethod(service) {
             if(service.observableInterfaces !== undefined){
                 for(var i=0; i < service.observableInterfaces.length; i++){
                     var observableInterface = service.observableInterfaces[i];
                     if(observableInterfaceMethods[observableInterface] === undefined){
-                        observableInterfaceMethods[observableInterface] = []
+                        observableInterfaceMethods[observableInterface] = [];
                     }
                     observableInterfaceMethods[observableInterface].push(service);
                 }
@@ -66,13 +61,13 @@ window['mosquito'] = new (function() {
         function service(serviceType, serviceName, dependentServices, constructor, overwrite) {
             if(constructor){
                 if(moduleServices[serviceName] !== undefined && !overwrite) { throw "Service already defined: " + serviceName; }
-                var service = {
+                var serviceData = {
                     'serviceType': serviceType,
                     'dependentServices': dependentServices,
                     'constructor': constructor
                 };
-                defineFromObservableInterfaceMethod(service);
-                return moduleServices[serviceName] = service;
+                defineFromObservableInterfaceMethod(serviceData);
+                return moduleServices[serviceName] = serviceData;
             } else {
                 return moduleServices[serviceName];
             }
@@ -90,23 +85,24 @@ window['mosquito'] = new (function() {
             return parameters;
         }
 
-        function getObservableInterface(interfaceName){
+        function getObservableInterface(interfaceName, interfaceMethods){
             return function(){
                 this.next = function(interfaceMethod, params){
+                    if(interfaceMethods.indexOf(interfaceMethod) === -1) { throw "Observable method not declared: " + interfaceMethod; }
                     var observableInterfaceMethod = observableInterfaceMethods[interfaceName];
                     for(var i = 0; i < observableInterfaceMethod.length; i++){
                         if(observableInterfaceMethod[i].instance !== undefined){
                             observableInterfaceMethod[i].instance[interfaceMethod](params);
                         }
                     }
-                }
-            }
+                };
+            };
         }
 
         function defineFromObservableInterfaceMethod(service){
             service.fromObservableInterface = function(observableInterfaces){
                 service.observableInterfaces = observableInterfaces;
-            }
+            };
         }
 
         this.controller = function(controllerName, constructor){
@@ -142,8 +138,8 @@ window['mosquito'] = new (function() {
         };
 
         this.observableInterface = function(interfaceName, interfaceMethods){
-            return service(serviceType.service, interfaceName, [], getObservableInterface(interfaceName));
-        }
+            return service(serviceType.service, interfaceName, [], getObservableInterface(interfaceName, interfaceMethods));
+        };
     }
 
     function getModule(moduleName) {
