@@ -184,3 +184,14 @@ mosquito.module('module1').service('service1', function(){
   this.mouseLeftDown = function(){ };
 }).fromObservableInterface(['oiGameLoop', 'oiMouse']);
 ```
+
+### Execute an Observable Interface
+```bash
+observableInterface.next(name, params);
+```
+Observable interfaces are services which can be injected into other services and controllers. They have just one method 'next', into which must be passed the name of the observable method to execute together with optional parameters. Once executed, all observable instances of this method will also be executed. It must be noted that a 'next' method must never be called within a constructor.
+```javascript
+mosquito.module('module1').service('servcie1', ['oiGameLoop', function(oiGameLoop) {
+  setTimeout(function(){ oiGameLoop.next('update', 1234); }, 1000);
+}]);
+```
