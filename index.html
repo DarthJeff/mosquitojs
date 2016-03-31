@@ -17,7 +17,7 @@ Mosquito Testing
 
         var module = mosquito.module('module1', []);
         module.observableInterface('oiGameLoop', ['update', 'render']);
-        module.observableInterface('oiKeypad', ['keydown']);
+        module.observableInterface('oiKeypad', 'keydown');
 
         module.factory('factoryTest', ['oiGameLoop', function(oiGameLoop){
             return{
