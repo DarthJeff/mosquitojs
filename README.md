@@ -163,7 +163,13 @@ mosquito.module('module1').run(function() {
 
 The observable interface simplifies the use of the observer pattern within mosquitojs services and controllers.
 
+### Define an Observable Interface
 ```bash
 module.observableInterface(name, methods);
 ```
 
+An observable interface is first defined with an identifyable name and either a single or list of methods to be observed.
+
+```javascript
+mosquito.module('module1').observableInterface('oiGameLoop', ['update', 'render']);
+```
