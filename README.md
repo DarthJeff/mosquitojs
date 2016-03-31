@@ -61,7 +61,7 @@ mosquito.module('module1').controller('pageController');
 
 A service is a static instance of a method for utilising code reuse and seperation of concerns. Services can injected into other services and controllers. There a three types of service; factory, provider and service. This is the basic service implementation which returns a new instance of the contructor.
 
-The contructor of a service is called upon first use.
+The constructor of a service is called upon first use.
 
 ```bash
 module.service(name, constructor);
@@ -86,7 +86,7 @@ mosquito.module('module1').service('servcie1', ['service2', function(service2) {
 
 A factory is a service which returns an object. Unlike the basic service above, a new instance of this object is not automatically created, leaving this choice to the user.
 
-The contructor of a service is called upon first use.
+The constructor of a service is called upon first use.
 
 ```bash
 module.factory(name, constructor);
@@ -167,9 +167,20 @@ The observable interface simplifies the use of the observer pattern within mosqu
 ```bash
 module.observableInterface(name, methods);
 ```
-
 An observable interface is first defined with an identifyable name and either a single or list of methods to be observed.
-
 ```javascript
 mosquito.module('module1').observableInterface('oiGameLoop', ['update', 'render']);
+```
+
+### Implement an Observable Interface
+```bash
+service.fromObservableInterface(observableInterfaces);
+```
+Appropriate controllers and services are then instructed to implement the required observable interfaces. It is important that the respective methods are then defined upon the appropriate controllers and services.
+```javascript
+mosquito.module('module1').service('service1', function(){
+  this.update = function(params){ };
+  this.render = function(params){ };
+  this.mouseLeftDown = function(){ };
+}).fromObservableInterface(['oiGameLoop', 'oiMouse']);
 ```
