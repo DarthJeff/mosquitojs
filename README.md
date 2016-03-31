@@ -150,10 +150,20 @@ A run is a special kind of service that is executed immediately upon the HTML pa
 module.run(constructor);
 ```
 
-Multiple run services can be defined for each module and they will all be executed as soon as the HTML page has loaded.
+Multiple run services can be defined for each module and they will all be executed as soon as the HTML page has loaded. As they have no identifying names, they cannot be injected into other services.
 
 ### Define a Run
 ```javascript
 mosquito.module('module1').run(function() {
   console.log('The page has loaded');
 });
+```
+
+## Observable Interface
+
+The observable interface simplifies the use of the observer pattern within mosquitojs services and controllers.
+
+```bash
+module.observableInterface(name, methods);
+```
+
