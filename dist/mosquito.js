@@ -1,4 +1,4 @@
-/*! mosquitojs - v0.1.1 - 2016-03-31
+/*! mosquitojs - v0.1.1 - 2016-04-01
 * Copyright (c) 2016 Jeff Brannon; Licensed MIT */
 'use strict';
 
@@ -50,8 +50,8 @@ window['mosquito'] = new (function() {
 
         function constructServiceMethod(service) {
             if(service.observableInterfaces !== undefined){
-                for(var i=0; i < service.observableInterfaces.length; i++) {
-                    var observableInterface = service.observableInterfaces[i];
+                for(var index = 0; index < service.observableInterfaces.length; index++) {
+                    var observableInterface = service.observableInterfaces[index];
                     if(observableInterfaceMethods[observableInterface] === undefined) {
                         observableInterfaceMethods[observableInterface] = [];
                     }
@@ -168,8 +168,7 @@ window['mosquito'] = new (function() {
                 document.onreadystatechange = function() {
                     if(document.readyState === 'complete') {
                         for(var i = 0; i < runMethods.length; i++) {
-                            var injectionServices = constructInjectionServices(runMethods[i].dependentServices);
-                            runMethods[i].constructor.apply(this, injectionServices);
+                            constructServiceMethod(runMethods[i]);
                         }
                     }
                 };
@@ -184,9 +183,8 @@ window['mosquito'] = new (function() {
 
     function getModules(moduleNames) {
         var modules = [];
-        for(var index = 0; index < moduleNames.length; index++){
-            var moduleName = moduleNames[index];
-            modules.push(getModule(moduleName));
+        for(var index = 0; index < moduleNames.length; index++) {
+            modules.push(getModule(moduleNames[index]));
         }
         return modules;
     }
@@ -194,7 +192,7 @@ window['mosquito'] = new (function() {
     this.module = function(moduleName, dependentModules) {
         if(dependentModules) {
             if(modules[moduleName] !== undefined) { throw "Module already defined: " + moduleName; }
-            try{
+            try {
                 return(modules[moduleName] = new module(getModules(dependentModules)));
             }
             catch(err) {
