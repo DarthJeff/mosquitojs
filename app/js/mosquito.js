@@ -1,30 +1,36 @@
+/*jslint browser:true */
 'use strict';
 
 window['mosquito'] = new (function() {
     var runMethods = [];
     var modules = [];
+    var observableInterfaceMethods = [];
     var serviceType = {
         'service': 1,
         'factory': 2,
-        'provider': 3
+        'provider': 3,
+        'observableInterface': 4
     };
 
-    function module(dependentModules){
+    function module(dependentModules) {
         dependentModules.push(this);
         var moduleDependents = dependentModules;
         var moduleControllers = [];
         var moduleServices = [];
-        var observableInterfaceMethods = [];
 
-        function getService(serviceName){
-            for(var index = 0; index < moduleDependents.length; index++){
+        function getService(serviceName) {
+            for(var index = 0; index < moduleDependents.length; index++) {
                 var service = moduleDependents[index].service(serviceName);
                 if(service !== undefined) {
-                    if(service.instance === undefined){
-                        if(service.serviceType === serviceType.service) {
-                            service.instance = constructNewServiceMethodInstance(service);
-                        } else {
-                            service.instance = constructServiceMethod(service);
+                    if(service.instance === undefined) {
+                        switch(service.serviceType) {
+                            case serviceType.service:
+                            case serviceType.observableInterface:
+                                service.instance = constructNewServiceMethodInstance(service);
+                                break;
+                            default:
+                                service.instance = constructServiceMethod(service);
+                                break;
                         }
                     }
                     return service.instance;
@@ -43,9 +49,9 @@ window['mosquito'] = new (function() {
 
         function constructServiceMethod(service) {
             if(service.observableInterfaces !== undefined){
-                for(var i=0; i < service.observableInterfaces.length; i++){
+                for(var i=0; i < service.observableInterfaces.length; i++) {
                     var observableInterface = service.observableInterfaces[i];
-                    if(observableInterfaceMethods[observableInterface] === undefined){
+                    if(observableInterfaceMethods[observableInterface] === undefined) {
                         observableInterfaceMethods[observableInterface] = [];
                     }
                     observableInterfaceMethods[observableInterface].push(service);
@@ -60,7 +66,7 @@ window['mosquito'] = new (function() {
         }
 
         function service(serviceType, serviceName, dependentServices, constructor, overwrite) {
-            if(constructor){
+            if(constructor) {
                 if(moduleServices[serviceName] !== undefined && !overwrite) { throw "Service already defined: " + serviceName; }
                 var serviceData = {
                     'serviceType': serviceType,
@@ -86,13 +92,13 @@ window['mosquito'] = new (function() {
             return parameters;
         }
 
-        function getObservableInterface(interfaceName, interfaceMethods){
+        function getObservableInterface(interfaceName, interfaceMethods) {
             interfaceMethods = asArray(interfaceMethods);
-            return function(){
-                this.next = function(interfaceMethod, params){
+            return function() {
+                this.next = function(interfaceMethod, params) {
                     if(interfaceMethods.indexOf(interfaceMethod) === -1) { throw "Observable method not declared: " + interfaceMethod; }
-                    for(var index = 0; index < moduleDependents.length; index++) {
-                        var observableInterfaceMethod = moduleDependents[index].observableInterface(interfaceName);
+                    var observableInterfaceMethod = observableInterfaceMethods[interfaceName];
+                    if(observableInterfaceMethod !== undefined) {
                         for(var i = 0; i < observableInterfaceMethod.length; i++) {
                             if(observableInterfaceMethod[i].instance !== undefined) {
                                 observableInterfaceMethod[i].instance[interfaceMethod](params);
@@ -103,7 +109,7 @@ window['mosquito'] = new (function() {
             };
         }
 
-        function defineFromObservableInterfaceMethod(service){
+        function defineFromObservableInterfaceMethod(service) {
             service.fromObservableInterface = function(observableInterfaces){
                 observableInterfaces = asArray(observableInterfaces);
                 service.observableInterfaces = observableInterfaces;
@@ -117,7 +123,7 @@ window['mosquito'] = new (function() {
             return object;
         }
 
-        this.controller = function(controllerName, constructor){
+        this.controller = function(controllerName, constructor) {
             if(constructor){
                 if(moduleControllers[controllerName] !== undefined) { throw "Controller already defined: " + controllerName; }
                 moduleControllers[controllerName] = getParametersFromConstructor(constructor);
@@ -132,28 +138,41 @@ window['mosquito'] = new (function() {
             }
         };
 
-        this.service = function(serviceName, constructor){
+        this.service = function(serviceName, constructor) {
             var parameters = getParametersFromConstructor(constructor);
             return service(serviceType.service, serviceName, parameters.dependentServices, parameters.constructor);
         };
 
-        this.factory = function(factoryName, constructor){
+        this.factory = function(factoryName, constructor) {
             var parameters = getParametersFromConstructor(constructor);
             return service(serviceType.factory, factoryName, parameters.dependentServices, parameters.constructor);
         };
 
-        this.provider = function(providerName, providerFunction){
+        this.provider = function(providerName, providerFunction) {
             var provider = service(serviceType.provider, providerName, [], providerFunction);
             var constructor = constructNewServiceMethodInstance(provider);
             var parameters = getParametersFromConstructor(constructor.$get);
             return service(serviceType.provider, providerName, parameters.dependentServices, parameters.constructor, true);
         };
 
-        this.observableInterface = function(interfaceName, interfaceMethods){
-            if(interfaceMethods) {
-                return service(serviceType.service, interfaceName, [], getObservableInterface(interfaceName, interfaceMethods));
+        this.observableInterface = function(interfaceName, interfaceMethods) {
+            return service(serviceType.observableInterface, interfaceName, [], getObservableInterface(interfaceName, interfaceMethods));
+        };
+
+        this.run = function(constructor) {
+            if(constructor === undefined) { throw "Run method undefined"; }
+            var parameters = getParametersFromConstructor(constructor);
+            runMethods.push(parameters);
+            if(runMethods.length === 1){
+                document.onreadystatechange = function() {
+                    if(document.readyState === 'complete') {
+                        for(var i = 0; i < runMethods.length; i++) {
+                            var injectionServices = constructInjectionServices(runMethods[i].dependentServices);
+                            runMethods[i].constructor.apply(this, injectionServices);
+                        }
+                    }
+                };
             }
-            return observableInterfaceMethods[interfaceName];
         };
     }
 
@@ -182,20 +201,6 @@ window['mosquito'] = new (function() {
             }
         } else {
             return getModule(moduleName);
-        }
-    };
-
-    this.run = function(runMethod) {
-        if(runMethod === undefined) { throw "Run method undefined"}
-        runMethods.push(runMethod);
-        if(runMethods.length === 1){
-            document.onreadystatechange = function() {
-                if(document.readyState === 'complete') {
-                    for(var i = 0; i < runMethods.length; i++) {
-                        runMethods[i]();
-                    }
-                }
-            }
         }
     };
 

@@ -8,16 +8,27 @@ Mosquito Testing
     <script type="text/javascript">
         "use strict";
 
-        mosquito.run(function(){
-            module.controller('gameController');
+        var gameModule = mosquito.module('gameModule', []);
+        gameModule.observableInterface('oiGameLoop', ['update', 'render']);
+        gameModule.service('gameModuleService', function() {
+            this.startUp = function() {
+                console.log('start up');
+            }
         });
-        mosquito.run(function(){
+
+
+        var module = mosquito.module('module1', ['gameModule']);
+        module.observableInterface('oiKeypad', 'keydown');
+
+
+        gameModule.run(['gameModuleService', function(gameModuleService){
+            gameModuleService.startUp();
+            module.controller('gameController');
+        }]);
+        module.run(function(){
             console.log(111);
         });
 
-        var module = mosquito.module('module1', []);
-        module.observableInterface('oiGameLoop', ['update', 'render']);
-        module.observableInterface('oiKeypad', 'keydown');
 
         module.factory('factoryTest', ['oiGameLoop', function(oiGameLoop){
             return{
