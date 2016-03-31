@@ -141,3 +141,19 @@ mosquito.module('module1').provider('provider1', function() {
   }];
 });
 ```
+
+## Run
+
+A run is a special kind of service that is executed immediately upon the HTML page being loaded. These services should be used as the entry point into your JavaScript project.
+
+```bash
+module.run(constructor);
+```
+
+Multiple run services can be defined for each module and they will all be executed as soon as the HTML page has loaded.
+
+### Define a Run
+```javascript
+mosquito.module('module1').run(function() {
+  console.log('The page has loaded');
+});
