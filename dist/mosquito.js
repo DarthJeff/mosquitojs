@@ -1,4 +1,4 @@
-/*! mosquitojs - v0.1.1 - 2016-04-01
+/*! mosquitojs - v0.2.3 - 2016-04-01
 * Copyright (c) 2016 Jeff Brannon; Licensed MIT */
 'use strict';
 
@@ -107,7 +107,7 @@ window['mosquito'] = new (function() {
                     var observableInterfaceMethod = observableInterfaceMethods[interfaceName];
                     if(observableInterfaceMethod !== undefined) {
                         for(var i = 0; i < observableInterfaceMethod.length; i++) {
-                            if(observableInterfaceMethod[i].instance !== undefined) {
+                            if(observableInterfaceMethod[i].instance !== undefined && observableInterfaceMethod[i].instance[interfaceMethod] !== undefined) {
                                 observableInterfaceMethod[i].instance[interfaceMethod](params);
                             }
                         }
