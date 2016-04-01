@@ -43,7 +43,9 @@ module.exports = function(grunt) {
             beforeconcat: ['app/js/mosquito.js'],
             afterconcat: ['dist/output.js']
         },
-        nodeunit : {files : [ 'test/**/*_test.js' ]}
+        nodeunit : {
+            all : [ 'test/initialiseTests.js', 'test/**/*_test.js' ]
+        }
     });
 
     // These plugins provide necessary tasks
@@ -54,5 +56,5 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-watch');
 
     // Default task
-    grunt.registerTask('dist', [ 'jshint', 'concat', 'uglify' ]);
+    grunt.registerTask('dist', [ 'jshint', 'nodeunit', 'concat', 'uglify' ]);
 };
