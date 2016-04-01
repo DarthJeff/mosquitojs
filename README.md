@@ -22,7 +22,7 @@ A module is a collection of controllers and services. Modules can be injected in
 mosquito.module(name, [requires]);
 ```
 
-It is imperative that modules are loaded in order.
+Modules do not have to be declared in order.
 
 ### Define a Module
 ```javascript
