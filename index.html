@@ -8,6 +8,12 @@ Mosquito Testing
     <script type="text/javascript">
         "use strict";
 
+        var module = mosquito.module('module1', ['gameModule']);
+        module.observableInterface('oiKeypad', 'keydown');
+
+
+
+
         var gameModule = mosquito.module('gameModule', []);
         gameModule.observableInterface('oiGameLoop', ['update', 'render']);
         gameModule.service('gameModuleService', function() {
@@ -17,8 +23,6 @@ Mosquito Testing
         });
 
 
-        var module = mosquito.module('module1', ['gameModule']);
-        module.observableInterface('oiKeypad', 'keydown');
 
 
         gameModule.run(['gameModuleService', function(gameModuleService){

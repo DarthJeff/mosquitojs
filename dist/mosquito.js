@@ -14,12 +14,18 @@ window['mosquito'] = new (function() {
     };
 
     function module(dependentModules) {
-        dependentModules.push(this);
-        var moduleDependents = dependentModules;
+        var moduleSelf = this;
+        var moduleDependents;
         var moduleControllers = [];
         var moduleServices = [];
 
         function getService(serviceName) {
+            if(moduleDependents === undefined) {
+                moduleDependents = [moduleSelf];
+                for(var moduleIndex = 0; moduleIndex < dependentModules.length; moduleIndex++) {
+                    moduleDependents.push(modules[dependentModules[moduleIndex]]);
+                }
+            }
             for(var index = 0; index < moduleDependents.length; index++) {
                 var service = moduleDependents[index].service(serviceName);
                 if(service !== undefined) {
@@ -176,30 +182,13 @@ window['mosquito'] = new (function() {
         };
     }
 
-    function getModule(moduleName) {
-        if(modules[moduleName] === undefined) { throw "Module undefined: " + moduleName; }
-        return modules[moduleName];
-    }
-
-    function getModules(moduleNames) {
-        var modules = [];
-        for(var index = 0; index < moduleNames.length; index++) {
-            modules.push(getModule(moduleNames[index]));
-        }
-        return modules;
-    }
-
     this.module = function(moduleName, dependentModules) {
         if(dependentModules) {
             if(modules[moduleName] !== undefined) { throw "Module already defined: " + moduleName; }
-            try {
-                return(modules[moduleName] = new module(getModules(dependentModules)));
-            }
-            catch(err) {
-                throw "Error defining module: " + moduleName + ' - ' + err;
-            }
+            return(modules[moduleName] = new module(dependentModules));
         } else {
-            return getModule(moduleName);
+            if(modules[moduleName] === undefined) { throw "Module undefined: " + moduleName; }
+            return modules[moduleName];
         }
     };
 
