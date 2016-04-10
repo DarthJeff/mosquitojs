@@ -40,10 +40,13 @@ module.exports = function(grunt) {
                 }
             },
             gruntfile : {src : 'gruntfile.js'},
-            beforeconcat: ['app/js/mosquito.js'],
+            beforeconcat: ['app/js/*.js'],
             afterconcat: ['dist/output.js']
         },
         nodeunit : {
+            all : [ 'test/initialiseTests.js', 'test/**/*_test.js' ]
+        },
+        qunit : {
             all : [ 'test/initialiseTests.js', 'test/**/*_test.js' ]
         }
     });
@@ -54,6 +57,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-nodeunit');
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-watch');
+    grunt.loadNpmTasks('grunt-contrib-qunit');
 
     // Default task
     grunt.registerTask('dist', [ 'jshint', 'nodeunit', 'concat', 'uglify' ]);
