@@ -22,7 +22,6 @@ mosquito.prototype = {
         }
     }
 };
-
 'use strict';
 
 var mosquito = window['mosquito'];
@@ -176,7 +175,6 @@ mosquitoModule.prototype.controller = function(controllerName, constructor) {
         return this.internal.moduleControllers[controllerName].instance;
     }
 };
-
 'use strict';
 
 var mosquito = window['mosquito'];
@@ -229,11 +227,6 @@ mosquitoModule.prototype.observableInterface = function(interfaceName, interface
         };
     }
 };
-
 'use strict';
 
 window['mosquito'] = new window['mosquito']();
-
-(function(){
-    console.log('==========================');
-})();
