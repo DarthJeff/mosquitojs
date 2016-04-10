@@ -1,17 +1,20 @@
+/*jslint browser:true */
 'use strict';
 
+var mosquito = window['mosquito'];
 var mosquitoModule = mosquito.prototype.internal.mosquitoModule;
 
 mosquitoModule.prototype = {
     internal: {
         moduleServices: [],
         moduleControllers: [],
-        preConstructServiceMethod: function(service) {},
+        extend: function() {},
+        preConstructServiceMethod: function() {},
         constructNewServiceMethodInstance: function(service) {
             return new this.constructServiceMethod(service, this);
         },
-        constructServiceMethod: function(service, internal) {
-            var internal = internal || this;
+        constructServiceMethod: function(service, mInternal) {
+            var internal = mInternal || this;
             internal.preConstructServiceMethod(service);
             var injectionServices = constructInjectionServices(service.dependentServices);
             return service.constructor.apply(this, injectionServices);
@@ -43,12 +46,12 @@ mosquitoModule.prototype = {
                         if(internal.moduleDependents === undefined) {
                             internal.moduleDependents = [internal.moduleSelf];
                             for(var moduleIndex = 0; moduleIndex < internal.dependentModules.length; moduleIndex++) {
-                                internal.moduleDependents.push(modules[internal.dependentModules[moduleIndex]]);
+                                internal.moduleDependents.push(mosquito.internal.modules[internal.dependentModules[moduleIndex]]);
                             }
                         }
                     }
+                    throw "Service undefined: " + serviceName;
                 }
-                throw "Service undefined: " + serviceName;
             }
         },
         asArray: function(object) {
@@ -59,5 +62,3 @@ mosquitoModule.prototype = {
         }
     }
 };
-
-mosquitoModule.prototype.internal.extend = function(service) {};

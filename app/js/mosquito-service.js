@@ -1,5 +1,7 @@
+/*jslint browser:true */
 'use strict';
 
+var mosquito = window['mosquito'];
 var mosquitoModule = mosquito.prototype.internal.mosquitoModule;
 
 mosquitoModule.prototype.internal.mosquitoService = function(isNewableServiceType, serviceName, dependentServices, constructor, overwrite) {
@@ -36,7 +38,7 @@ mosquitoModule.prototype.internal.addService = function(serviceName, constructor
         serviceName,
         parameters.dependentServices,
         parameters.constructor,
-        overwrite || false)
+        overwrite || false);
 };
 
 mosquitoModule.prototype.service = function(serviceName, constructor) {

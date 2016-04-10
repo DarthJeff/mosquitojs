@@ -1,5 +1,7 @@
+/*jslint browser:true */
 'use strict';
 
+var mosquito = window['mosquito'];
 var mosquitoModule = mosquito.prototype.internal.mosquitoModule;
 
 mosquitoModule.prototype.internal.extend = function(service) {

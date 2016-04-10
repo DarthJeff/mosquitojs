@@ -1,7 +1,7 @@
 /*jslint browser:true */
 'use strict';
 
-window['mosquito'] = new mosquito();
+window['mosquito'] = new window['mosquito']();
 
 (function(){
     console.log('==========================');

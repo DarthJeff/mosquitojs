@@ -13,7 +13,13 @@ module.exports = function(grunt) {
         // Task configuration
         concat : {
           options : {banner : '<%= banner %>', stripBanners : true},
-          dist : {src : [ 'app/js/mosquito.js' ], dest : 'dist/mosquito.js'}
+          dist : {src : [
+              'app/js/mosquito-initial.js',
+              'app/js/mosquito-module.js',
+              'app/js/mosquito-service.js',
+              'app/js/mosquito-observable.js',
+              'app/js/mosquito-define.js'
+          ], dest : 'dist/mosquito.js'}
         },
         uglify : {
           options : {banner : '<%= banner %>'},
@@ -25,7 +31,7 @@ module.exports = function(grunt) {
                 curly : true,
                 eqeqeq : true,
                 immed : true,
-                latedef : true,
+                latedef : false,
                 newcap : false,
                 noarg : true,
                 sub : true,
@@ -60,5 +66,5 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-qunit');
 
     // Default task
-    grunt.registerTask('dist', [ 'jshint', 'nodeunit', 'concat', 'uglify' ]);
+    grunt.registerTask('dist', [ 'jshint', 'concat', 'uglify' ]);
 };
